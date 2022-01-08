@@ -4,16 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf node_modules build/*",
-    "build": "tsc",
-    "start": "node build/index.js",
-    "clean-install-build-start": "npm run clean && npm ci && npm run build && npm run start",
+    "clean": "rm -rf build/*",
+    "build.tsc": "tsc",
+    "build.esbuild": "node esbuild-node-bundle.js",
+    "build": "npm run build.tsc ; npm run build.esbuild",
+    "start.tsc": "echo -------------------- STARTING TSC FILE && node build/index.js",
+    "start.esbuild": "echo -------------------- STARTING ESBUILD BUNDLE && node build/index.bundle.js",
+    "start": "npm run start.tsc ; npm run start.esbuild",
+    "everything": "npm run clean && npm ci && npm run build && npm run start ; ls -lah build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Cinnamon",
   "license": "ISC",
   "dependencies": {
-    "stone-soup": "^7.0.1",
+    "stone-soup": "^7.0.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.10",
     "typescript": "~4.5.4"
   }
 }
