@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf build/*",
+    "clean": "rm -rf node_modules build/*",
     "build": "tsc",
     "start": "node build/index.js",
-    "clean-build-start": "npm run clean && npm run build && npm run start",
+    "clean-install-build-start": "npm run clean && npm ci && npm run build && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Cinnamon",
