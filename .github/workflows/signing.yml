@@ -2,11 +2,13 @@ name: Signing
 on: [push, pull_request]
 jobs:
   Signing:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         node: [ '16', '14', '12' ]
-    name: Signing (node ${{ matrix.node }})
+        os: [ 'ubuntu-20.04' ]
+        kind: [ 'esbuild', 'tsc' ]
+    runs-on: ${{ matrix.os }}
+    name: 'Signing | ${{ matrix.kind }}, node ${{ matrix.node }} on ${{ matrix.os }}'
     steps:
       - uses: actions/checkout@v2
       - name: Set up node ${{ matrix.node }}
@@ -15,7 +17,5 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: cd signing/node && pwd && npm install esbuild
       - run: cd signing/node && pwd && npm ci
-      - run: cd signing/node && pwd && npm run build.esbuild
-      - run: cd signing/node && pwd && npm run build.tsc
-      - run: cd signing/node && pwd && npm run start.esbuild
-      - run: cd signing/node && pwd && npm run start.tsc
+      - run: cd signing/node && pwd && npm run build.${{ matrix.kind }}
+      - run: cd signing/node && pwd && npm run start.${{ matrix.kind }}
