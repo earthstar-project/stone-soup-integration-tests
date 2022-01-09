@@ -1,26 +1,26 @@
 //import test from 'https://esm.sh/tape@5.4.0?target=deno';
 
-import { assertEquals } from "https://deno.land/std@0.120.0/testing/asserts.ts";
+import {
+  assert,
+  assertEquals,
+} from "https://deno.land/std@0.120.0/testing/asserts.ts";
+const test = Deno.test;
 
-Deno.test('example test', () => {
-    assertEquals(1, 1, '1 should be 1');
-});
-
-/*
 import {
     AuthorKeypair,
     Crypto,
     CryptoDriverNoble,
-    CryptoDriverTweetnacl,
+//    CryptoDriverTweetnacl,  // this was removed from the stone-soup esm-first branch?
     GlobalCryptoDriver,
     ICryptoDriver,
     ValidationError,
     isErr,
     notErr,
     setGlobalCryptoDriver,
-} from 'https://cdn.pika.dev/stone-soup@7.0.2';
-//} from 'https://cdn.skypack.dev/stone-soup@7.0.2?dts';
-// } from 'https://esm.sh/stone-soup@7.0.2?target=deno';
+} from '../../../stone-soup-deno/mod.ts';
+//} from 'https://cdn.pika.dev/stone-soup@7.0.2';   // does not work
+//} from 'https://cdn.skypack.dev/stone-soup@7.0.2?dts';   // does not work
+//} from 'https://esm.sh/stone-soup@7.0.2?target=deno';   // does not work
 
 const cryptoTests = (cryptoDriver: ICryptoDriver) => {
     const knownKeypair: AuthorKeypair = {
@@ -32,44 +32,40 @@ const cryptoTests = (cryptoDriver: ICryptoDriver) => {
 
     const cryptoDriverName = (cryptoDriver as any).name;
 
-    test(`${cryptoDriverName}: generateAuthorKeypair`, async (t) => {
+    test(`${cryptoDriverName}: generateAuthorKeypair`, async () => {
         setGlobalCryptoDriver(cryptoDriver);
         const newKeypair: AuthorKeypair | ValidationError  = await Crypto.generateAuthorKeypair('test');
-        t.equal(isErr(newKeypair), false, 'not an error');
+        assertEquals(isErr(newKeypair), false, 'not an error');
         if (notErr(newKeypair)) {
-            t.equal(typeof newKeypair.address, 'string', 'keypair has address');
-            t.equal(typeof newKeypair.secret, 'string', 'keypair has secret');
+            assertEquals(typeof newKeypair.address, 'string', 'keypair has address');
+            assertEquals(typeof newKeypair.secret, 'string', 'keypair has secret');
         }
-        t.end();
     });
 
-    test(`${cryptoDriverName}: sign`, async (t) => {
+    test(`${cryptoDriverName}: sign`, async () => {
         setGlobalCryptoDriver(cryptoDriver);
         const sig = await Crypto.sign(knownKeypair, msg);
         if (isErr(sig)) {
-            t.fail('sign() returned an error');
+            assert(false, 'sign() returned an error');
             return;
         }
-        t.equal(sig, expectedSig, 'sig should match expected sig');
-        t.end();
+        assertEquals(sig, expectedSig, 'sig should match expected sig');
     });
 
-    test(`${cryptoDriverName}: verify`, async (t) => {
+    test(`${cryptoDriverName}: verify`, async () => {
         setGlobalCryptoDriver(cryptoDriver);
         const verifiedGood = await Crypto.verify(knownKeypair.address, expectedSig, msg);
         const verifiedBad = await Crypto.verify(knownKeypair.address, expectedSig, 'some other message');
-        t.ok(verifiedGood, 'verified a good signature');
-        t.notOk(verifiedBad, 'rejected a bad signature');
-        t.end();
+        assert(verifiedGood, 'verified a good signature');
+        assert(!verifiedBad, 'rejected a bad signature');
     });
 }
 
 const drivers = [
     GlobalCryptoDriver,  // TODO: this is CryptoDriverNoble but let's test that the default value works
     CryptoDriverNoble,
-    CryptoDriverTweetnacl,
+//    CryptoDriverTweetnacl,
 ];
 for (const driver of drivers) {
     cryptoTests(driver);
 }
-*/

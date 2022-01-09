@@ -1,4 +1,4 @@
 .PHONY: test
 
 test:
-	deno test --unstable --no-check=remote index.ts
+	deno test --config deno.json --no-check=remote index.ts
