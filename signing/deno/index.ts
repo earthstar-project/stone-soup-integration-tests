@@ -1,5 +1,12 @@
-import test from 'tape';
+//import test from 'https://esm.sh/tape@5.4.0?target=deno';
 
+import { assertEquals } from "https://deno.land/std@0.120.0/testing/asserts.ts";
+
+Deno.test('example test', () => {
+    assertEquals(1, 1, '1 should be 1');
+});
+
+/*
 import {
     AuthorKeypair,
     Crypto,
@@ -11,10 +18,9 @@ import {
     isErr,
     notErr,
     setGlobalCryptoDriver,
-} from 'stone-soup'
-import {
-    CryptoDriverNode
-} from 'stone-soup/node';
+} from 'https://cdn.pika.dev/stone-soup@7.0.2';
+//} from 'https://cdn.skypack.dev/stone-soup@7.0.2?dts';
+// } from 'https://esm.sh/stone-soup@7.0.2?target=deno';
 
 const cryptoTests = (cryptoDriver: ICryptoDriver) => {
     const knownKeypair: AuthorKeypair = {
@@ -62,8 +68,8 @@ const drivers = [
     GlobalCryptoDriver,  // TODO: this is CryptoDriverNoble but let's test that the default value works
     CryptoDriverNoble,
     CryptoDriverTweetnacl,
-    CryptoDriverNode,
 ];
 for (const driver of drivers) {
     cryptoTests(driver);
 }
+*/
