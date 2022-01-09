@@ -4,11 +4,11 @@ jobs:
   Signing:
     strategy:
       matrix:
-        node: [ '16', '14', '12' ]
+        node: [ '16', '14' ]
         os: [ 'ubuntu-20.04' ]
         kind: [ 'esbuild', 'tsc' ]
     runs-on: ${{ matrix.os }}
-    name: 'Signing | ${{ matrix.kind }}, node ${{ matrix.node }} on ${{ matrix.os }}'
+    name: 'Signing | node ${{ matrix.node }} | ${{ matrix.kind }}'
     steps:
       - uses: actions/checkout@v2
       - name: Set up node ${{ matrix.node }}
@@ -18,4 +18,4 @@ jobs:
       - run: cd signing/node && pwd && npm install esbuild
       - run: cd signing/node && pwd && npm ci
       - run: cd signing/node && pwd && npm run build.${{ matrix.kind }}
-      - run: cd signing/node && pwd && npm run start.${{ matrix.kind }}
+      - run: cd signing/node && pwd && npm run test.${{ matrix.kind }}
