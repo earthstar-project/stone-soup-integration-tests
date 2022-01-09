@@ -1,8 +1,17 @@
 import {
     AuthorKeypair,
     Crypto,
-    isErr
+    CryptoDriverNoble,
+    CryptoDriverTweetnacl,
+    GlobalCryptoDriver,
+    ICryptoDriver,
+    isErr,
+    setGlobalCryptoDriver,
 } from 'stone-soup'
+//import {
+//    CryptoDriverNode
+//} from 'stone-soup/node';
+
 
 const log = console.log;
 const log2 = (...args: any[]) => console.log('    ', ...args);
@@ -14,8 +23,10 @@ const knownKeypair: AuthorKeypair = {
     "secret": "brkb5wo73qvs6q53yb4sxp4xxy6tmdlr3idqjalnqizshutndyeha"
 }
 
-const run = async () => {
-    log('crypto tests: signatures and keypairs');
+const run = async (cryptoDriver: ICryptoDriver) => {
+    setGlobalCryptoDriver(cryptoDriver);
+    const cryptoDriverName = (GlobalCryptoDriver as any).name;
+    log(`crypto tests: signatures and keypairs using ${cryptoDriverName}`);
     log();
     log('generating new keypair');
     const newKeypair = await Crypto.generateAuthorKeypair('test');
@@ -35,6 +46,7 @@ const run = async () => {
         logError('sig !== expected sig');
         return false;
     }
+    log2('signature is correct');
 
     log();
     log('testing signature verification, good and bad');
@@ -51,17 +63,25 @@ const run = async () => {
     return true;
 }
 let main = async () => {
-    let success = await run();
-    if (success) {
-        log();
-        log('SUCCESS');
-        log();
-        process.exit(0);
-    } else {
-        log();
-        log('FAILURE');
-        log();
-        process.exit(1);
+    let drivers = [
+        GlobalCryptoDriver,  // TODO: this is CryptoDriverNoble but let's test that the default value works
+        CryptoDriverNoble,
+        CryptoDriverTweetnacl,
+    ];
+    let allSuccess = true;
+    for (let driver of drivers) {
+        let success = await run(driver);
+        if (success) {
+            log();
+            log('SUCCESS');
+            log();
+        } else {
+            log();
+            log('FAILURE');
+            log();
+            allSuccess = false;
+        }
     }
+    process.exit(allSuccess ? 0 : 1);
 }
 main();

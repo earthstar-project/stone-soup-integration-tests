@@ -17,7 +17,7 @@
   "author": "Cinnamon",
   "license": "ISC",
   "dependencies": {
-    "stone-soup": "^7.0.1"
+    "stone-soup": "^7.0.2"
   },
   "devDependencies": {
     "@types/node": "^17.0.8",
