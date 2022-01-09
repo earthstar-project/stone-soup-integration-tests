@@ -1,4 +1,4 @@
-name: Signing
+name: Signing (node)
 on: [push, pull_request]
 jobs:
   Signing:
