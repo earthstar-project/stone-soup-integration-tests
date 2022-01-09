@@ -1,10 +1,10 @@
-//import test from 'https://esm.sh/tape@5.4.0?target=deno';
+import test from 'https://esm.sh/tape@5.4.0?target=deno';
 
-import {
-  assert,
-  assertEquals,
-} from "https://deno.land/std@0.120.0/testing/asserts.ts";
-const test = Deno.test;
+//import {
+//  assert,
+//  assertEquals,
+//} from "https://deno.land/std@0.120.0/testing/asserts.ts";
+//const test = Deno.test;
 
 import {
     AuthorKeypair,
@@ -32,32 +32,35 @@ const cryptoTests = (cryptoDriver: ICryptoDriver) => {
 
     const cryptoDriverName = (cryptoDriver as any).name;
 
-    test(`${cryptoDriverName}: generateAuthorKeypair`, async () => {
+    test(`${cryptoDriverName}: generateAuthorKeypair`, async (t) => {
         setGlobalCryptoDriver(cryptoDriver);
         const newKeypair: AuthorKeypair | ValidationError  = await Crypto.generateAuthorKeypair('test');
-        assertEquals(isErr(newKeypair), false, 'not an error');
+        t.equal(isErr(newKeypair), false, 'not an error');
         if (notErr(newKeypair)) {
-            assertEquals(typeof newKeypair.address, 'string', 'keypair has address');
-            assertEquals(typeof newKeypair.secret, 'string', 'keypair has secret');
+            t.equal(typeof newKeypair.address, 'string', 'keypair has address');
+            t.equal(typeof newKeypair.secret, 'string', 'keypair has secret');
         }
+        t.end();
     });
 
-    test(`${cryptoDriverName}: sign`, async () => {
+    test(`${cryptoDriverName}: sign`, async (t) => {
         setGlobalCryptoDriver(cryptoDriver);
         const sig = await Crypto.sign(knownKeypair, msg);
         if (isErr(sig)) {
-            assert(false, 'sign() returned an error');
+            t.fail('sign() returned an error');
             return;
         }
-        assertEquals(sig, expectedSig, 'sig should match expected sig');
+        t.equal(sig, expectedSig, 'sig should match expected sig');
+        t.end();
     });
 
-    test(`${cryptoDriverName}: verify`, async () => {
+    test(`${cryptoDriverName}: verify`, async (t) => {
         setGlobalCryptoDriver(cryptoDriver);
         const verifiedGood = await Crypto.verify(knownKeypair.address, expectedSig, msg);
         const verifiedBad = await Crypto.verify(knownKeypair.address, expectedSig, 'some other message');
-        assert(verifiedGood, 'verified a good signature');
-        assert(!verifiedBad, 'rejected a bad signature');
+        t.ok(verifiedGood, 'verified a good signature');
+        t.notOk(verifiedBad, 'rejected a bad signature');
+        t.end();
     });
 }
 
@@ -69,3 +72,8 @@ const drivers = [
 for (const driver of drivers) {
     cryptoTests(driver);
 }
+
+test.onFailure(() => {
+    console.log('FAIL');
+    Deno.exit(2);
+});
