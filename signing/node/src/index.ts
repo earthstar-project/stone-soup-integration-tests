@@ -8,9 +8,9 @@ import {
     isErr,
     setGlobalCryptoDriver,
 } from 'stone-soup'
-//import {
-//    CryptoDriverNode
-//} from 'stone-soup/node';
+import {
+    CryptoDriverNode
+} from 'stone-soup/node';
 
 
 const log = console.log;
@@ -67,6 +67,7 @@ let main = async () => {
         GlobalCryptoDriver,  // TODO: this is CryptoDriverNoble but let's test that the default value works
         CryptoDriverNoble,
         CryptoDriverTweetnacl,
+        CryptoDriverNode,
     ];
     let allSuccess = true;
     for (let driver of drivers) {
