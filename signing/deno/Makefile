@@ -1,4 +1,7 @@
 .PHONY: test
 
 test:
-	deno run --config deno.json --no-check=remote index.ts
+	deno run -A --no-check=remote index.ts
+
+fmt:
+	deno fmt

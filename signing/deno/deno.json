@@ -1,5 +1,11 @@
 {
-  "compilerOptions": {
-    "lib": ["deno.ns", "dom", "dom.asynciterable"]
-  }
+    "fmt": {
+        "files": {
+            "exclude": ["npm", ".git", "earthstar.bundle.js", ".nova"]
+        },
+        "options": {
+            "indentWidth": 4,
+            "lineWidth": 100
+        }
+    }
 }

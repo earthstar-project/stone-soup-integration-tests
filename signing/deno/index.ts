@@ -17,10 +17,10 @@ import {
     isErr,
     notErr,
     setGlobalCryptoDriver,
-} from '../../../stone-soup-deno/mod.ts';
-//} from 'https://cdn.pika.dev/stone-soup@7.0.2';   // does not work
-//} from 'https://cdn.skypack.dev/stone-soup@7.0.2?dts';   // does not work
-//} from 'https://esm.sh/stone-soup@7.0.2?target=deno';   // does not work
+} from '../../../stone-soup/mod.ts';
+//} from 'https://cdn.pika.dev/stone-soup@8.0.0';   // does not work
+//} from 'https://cdn.skypack.dev/stone-soup@8.0.0?dts';   // does not work
+//} from 'https://esm.sh/stone-soup@8.0.0?target=deno';   // does not work
 
 const cryptoTests = (cryptoDriver: ICryptoDriver) => {
     const knownKeypair: AuthorKeypair = {
